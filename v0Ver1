@@ -1,108 +1,187 @@
-import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Food Meal Planner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111827;
+            color: #10B981;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .restaurant-selection, .meal-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .restaurant-button {
+            background-color: #374151;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .restaurant-button.selected {
+            background-color: #10B981;
+        }
+        .restaurant-button img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+        }
+        select {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: #374151;
+            color: #10B981;
+            border: none;
+            border-radius: 5px;
+        }
+        .meal-card {
+            background-color: #1F2937;
+            padding: 15px;
+            border-radius: 5px;
+            width: 200px;
+            margin: 10px;
+        }
+        .donation-buttons {
+            text-align: center;
+        }
+        .donation-button {
+            background-color: #374151;
+            color: #10B981;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fast Food Meal Planner</h1>
+        
+        <section aria-labelledby="restaurant-selection">
+            <h2 id="restaurant-selection">Select Restaurants:</h2>
+            <div class="restaurant-selection">
+                <!-- Restaurant buttons will be inserted here by JavaScript -->
+            </div>
+        </section>
 
-// Updated restaurants array with new logo URLs
-const restaurants = [
-  { id: 1, name: 'Burger King', logo: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/burgerking-fb4APoZ0QnWBCtJou23Ioyj4hTFDcg.png' },
-  { id: 2, name: 'Chipotle', logo: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/chipotle-wPbIl1TVszuWDMpHXb7K92WLScXIhK.jpg' },
-  { id: 3, name: 'Subway', logo: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/subway-0sqTw36k13o6ySl2MeORMiLXUOHlKi.jpg' },
-  { id: 4, name: 'Taco Bell', logo: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/tacobell-WiWQOrybwgDIzjdKx0sKe55MvPCBHv.png' },
-  { id: 5, name: 'Wendy\'s', logo: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wendys-50hmMFMjyrMhNtceeNyr9pg3T5QMCU.png' },
-]
+        <section aria-labelledby="nutrition-requirement">
+            <h2 id="nutrition-requirement">Set Nutritional Requirement:</h2>
+            <select id="nutrition-select">
+                <option value="">Select nutritional requirement</option>
+                <option value="low_calorie">Low Calorie (300-400 cal)</option>
+                <option value="high_protein">High Protein (25g+ protein)</option>
+                <option value="balanced">Balanced (400-500 cal, 20g+ protein)</option>
+            </select>
+        </section>
 
-const meals = [
-  { id: 1, restaurantId: 1, name: 'Whopper Jr', calories: 310, protein: 13 },
-  { id: 2, restaurantId: 2, name: 'Chicken Burrito Bowl', calories: 590, protein: 32 },
-  { id: 3, restaurantId: 3, name: 'Turkey Breast 6" Sub', calories: 280, protein: 18 },
-  { id: 4, restaurantId: 4, name: 'Crunchy Taco', calories: 170, protein: 8 },
-  { id: 5, restaurantId: 5, name: 'Grilled Chicken Sandwich', calories: 370, protein: 34 },
-]
+        <section aria-labelledby="meal-options">
+            <h2 id="meal-options">Meal Options:</h2>
+            <div id="meal-options-container" class="meal-options">
+                <!-- Meal options will be inserted here by JavaScript -->
+            </div>
+        </section>
 
-export default function Component() {
-  const [selectedRestaurants, setSelectedRestaurants] = useState<number[]>([])
-  const [nutritionRequirement, setNutritionRequirement] = useState<string>('')
-
-  const toggleRestaurant = (id: number) => {
-    setSelectedRestaurants(prev => 
-      prev.includes(id) ? prev.filter(r => r !== id) : [...prev, id]
-    )
-  }
-
-  const getMealOptions = () => {
-    return selectedRestaurants.map(restaurantId => {
-      return meals.find(meal => meal.restaurantId === restaurantId)
-    }).filter(Boolean)
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-900 text-emerald-50 p-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">Fast Food Meal Planner</h1>
-      
-      <div className="mb-8">
-        <h2 className="text-xl mb-4">Select Restaurants:</h2>
-        <div className="flex justify-center space-x-4 flex-wrap">
-          {restaurants.map(restaurant => (
-            <Button
-              key={restaurant.id}
-              variant={selectedRestaurants.includes(restaurant.id) ? "default" : "outline"}
-              onClick={() => toggleRestaurant(restaurant.id)}
-              className="p-2 m-2"
-            >
-              <img 
-                src={restaurant.logo} 
-                alt={restaurant.name} 
-                className="w-16 h-16 object-contain" 
-                crossOrigin="anonymous"
-              />
-            </Button>
-          ))}
-        </div>
-      </div>
-
-      <div className="mb-8">
-        <h2 className="text-xl mb-4">Set Nutritional Requirement:</h2>
-        <Select onValueChange={setNutritionRequirement}>
-          <SelectTrigger className="w-full max-w-xs mx-auto">
-            <SelectValue placeholder="Select nutritional requirement" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="low_calorie">Low Calorie (300-400 cal)</SelectItem>
-            <SelectItem value="high_protein">High Protein (25g+ protein)</SelectItem>
-            <SelectItem value="balanced">Balanced (400-500 cal, 20g+ protein)</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {selectedRestaurants.length > 0 && nutritionRequirement && (
-        <div className="mb-8">
-          <h2 className="text-xl mb-4">Meal Options:</h2>
-          <div className="flex justify-center space-x-4 flex-wrap">
-            {getMealOptions().map(meal => (
-              <Card key={meal?.id} className="w-64 bg-gray-800 m-2">
-                <CardHeader>
-                  <CardTitle>{meal?.name}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p>Calories: {meal?.calories}</p>
-                  <p>Protein: {meal?.protein}g</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div className="text-center">
-        <h2 className="text-xl mb-4">Support the App</h2>
-        <p className="mb-4">This app is free, but feel FREE to donate and show support here:</p>
-        <div className="space-x-4">
-          <Button variant="outline">$2</Button>
-          <Button variant="outline">$5</Button>
-          <Button variant="outline">$10</Button>
-        </div>
-      </div>
+        <section aria-labelledby="support-app">
+            <h2 id="support-app">Support the App</h2>
+            <p>This app is free, but feel FREE to donate and show support here:</p>
+            <div class="donation-buttons">
+                <button class="donation-button">$2</button>
+                <button class="donation-button">$5</button>
+                <button class="donation-button">$10</button>
+            </div>
+        </section>
     </div>
-  )
-}
+
+    <script>
+        const restaurants = [
+            { id: 1, name: 'Burger King', logo: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/burgerking-fb4APoZ0QnWBCtJou23Ioyj4hTFDcg.png' },
+            { id: 2, name: 'Chipotle', logo: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/chipotle-wPbIl1TVszuWDMpHXb7K92WLScXIhK.jpg' },
+            { id: 3, name: 'Subway', logo: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/subway-0sqTw36k13o6ySl2MeORMiLXUOHlKi.jpg' },
+            { id: 4, name: 'Taco Bell', logo: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/tacobell-WiWQOrybwgDIzjdKx0sKe55MvPCBHv.png' },
+            { id: 5, name: 'Wendy\'s', logo: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/wendys-50hmMFMjyrMhNtceeNyr9pg3T5QMCU.png' },
+        ];
+
+        const meals = [
+            { id: 1, restaurantId: 1, name: 'Whopper Jr', calories: 310, protein: 13 },
+            { id: 2, restaurantId: 2, name: 'Chicken Burrito Bowl', calories: 590, protein: 32 },
+            { id: 3, restaurantId: 3, name: 'Turkey Breast 6" Sub', calories: 280, protein: 18 },
+            { id: 4, restaurantId: 4, name: 'Crunchy Taco', calories: 170, protein: 8 },
+            { id: 5, restaurantId: 5, name: 'Grilled Chicken Sandwich', calories: 370, protein: 34 },
+        ];
+
+        let selectedRestaurants = [];
+
+        function initializeRestaurants() {
+            const container = document.querySelector('.restaurant-selection');
+            restaurants.forEach(restaurant => {
+                const button = document.createElement('button');
+                button.className = 'restaurant-button';
+                button.setAttribute('aria-label', restaurant.name);
+                button.innerHTML = `<img src="${restaurant.logo}" alt="${restaurant.name}" crossorigin="anonymous">`;
+                button.addEventListener('click', () => toggleRestaurant(restaurant.id, button));
+                container.appendChild(button);
+            });
+        }
+
+        function toggleRestaurant(id, button) {
+            const index = selectedRestaurants.indexOf(id);
+            if (index > -1) {
+                selectedRestaurants.splice(index, 1);
+                button.classList.remove('selected');
+            } else {
+                selectedRestaurants.push(id);
+                button.classList.add('selected');
+            }
+            updateMealOptions();
+        }
+
+        function updateMealOptions() {
+            const container = document.getElementById('meal-options-container');
+            const nutritionRequirement = document.getElementById('nutrition-select').value;
+            container.innerHTML = '';
+
+            if (selectedRestaurants.length > 0 && nutritionRequirement) {
+                const mealOptions = selectedRestaurants.map(restaurantId => 
+                    meals.find(meal => meal.restaurantId === restaurantId)
+                ).filter(Boolean);
+
+                mealOptions.forEach(meal => {
+                    const card = document.createElement('div');
+                    card.className = 'meal-card';
+                    card.innerHTML = `
+                        <h3>${meal.name}</h3>
+                        <p>Calories: ${meal.calories}</p>
+                        <p>Protein: ${meal.protein}g</p>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeRestaurants();
+            document.getElementById('nutrition-select').addEventListener('change', updateMealOptions);
+        });
+    </script>
+</body>
+</html>
