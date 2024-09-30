@@ -59,15 +59,22 @@
             width: 200px;
             margin: 10px;
         }
-        .donation-buttons {
+        .donation-section {
             text-align: center;
+        }
+        .donation-text {
+            margin-bottom: 15px;
+        }
+        .donation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
         }
         .donation-button {
             background-color: #374151;
             color: #10B981;
             border: none;
             padding: 10px 20px;
-            margin: 0 5px;
             cursor: pointer;
             border-radius: 5px;
         }
@@ -101,9 +108,9 @@
             </div>
         </section>
 
-        <section aria-labelledby="support-app">
+        <section aria-labelledby="support-app" class="donation-section">
             <h2 id="support-app">Support the App</h2>
-            <p>This app is free, but feel FREE to donate and show support here:</p>
+            <p class="donation-text">This app is free, but feel FREE to donate and show support here:</p>
             <div class="donation-buttons">
                 <button class="donation-button">$2</button>
                 <button class="donation-button">$5</button>
